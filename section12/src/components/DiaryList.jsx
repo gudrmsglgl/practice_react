@@ -1,0 +1,53 @@
+import "./DiaryList.css";
+import { useNavigate } from "react-router-dom";
+import Button from "./Button";
+import DiaryItem from "./DiaryItem";
+import { useState } from "react";
+
+const DiaryList = ({ items }) => {
+  const nav = useNavigate();
+  const [sortType, setSortType] = useState("latest");
+
+  function goCreateDiaryPage() {
+    nav("/new");
+  }
+
+  function onChaneSortType(e) {
+    setSortType(e.target.value);
+  }
+
+  function getSortedData() {
+    return items.toSorted((a, b) => {
+      if (sortType === "oldest") {
+        return Number(a.createdDate) - Number(b.createdDate);
+      } else {
+        return Number(b.createdDate) - Number(a.createdDate);
+      }
+    });
+  }
+
+  const sortedData = getSortedData();
+
+  return (
+    <div className="DiaryList">
+      <div className="menu_bar">
+        <select onChange={onChaneSortType}>
+          <option value={"latest"}>최신순</option>
+          <option value={"oldest"}>오래된 순</option>
+        </select>
+        <Button
+          text={"새 일기 쓰기"}
+          type={"POSITIVE"}
+          onClick={goCreateDiaryPage}
+        />
+      </div>
+      <div>
+        {sortedData.map((diary) => (
+          <DiaryItem key={diary.id} {...diary} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default DiaryList;

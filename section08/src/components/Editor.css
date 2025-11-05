@@ -1,0 +1,20 @@
+.Editor {
+    display: flex;
+    gap: 10px;
+}
+
+.Editor input {
+    flex: 1; /* input 이 부모 공간을 넘지 않게 남는 공간을 다 차지하게 */
+    padding: 15px;
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 5px;
+}
+
+.Editor button {
+    cursor: pointer; /* 버튼 위에 마우스 올리면 포인터 모양으로 */
+    width: 88px;
+    border: none;
+    color: white;
+    background-color: rgb(37, 147, 255);
+    border-radius: 5px;
+}

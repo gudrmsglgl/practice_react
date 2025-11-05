@@ -1,0 +1,29 @@
+.TodoItem {
+    display: flex;
+    align-items: center; /* item을 vertical-center 정렬 */
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgb(240, 240, 240);
+}
+
+.TodoItem input {
+    width: 20px;
+}
+
+.TodoItem .content {
+    flex: 1; /* content 가 부모 공간을 넘지 않게 남는 공간을 다 차지하게 */
+}
+
+.TodoItem .date {
+    font-size: 14px;
+    color: grey;
+}
+
+.TodoItem button {
+    cursor: pointer; /* 버튼 위에 마우스 올리면 포인터 모양으로 */
+    border: none;
+    color: grey;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 14px;
+}
