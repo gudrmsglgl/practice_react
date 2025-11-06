@@ -7,6 +7,7 @@ import New from "./pages/New";
 import NotFound from "./pages/NotFound";
 import Edit from "./pages/Edit";
 import { useLocalStorageDiaryEffect } from "./hooks/useLocalStorageDiaryEffect"; 
+import { buildProvidersTree } from "./providers/buildProvidersTree";
 
 const mockData = [
   {
@@ -116,19 +117,22 @@ function App() {
     });
   }
 
+  const Providers = buildProvidersTree([
+    [DataContext.Provider, { value: data }],
+    [ActionContext.Provider, { value: { onCreate, onUpdate, onDelete } }],
+  ]);
+
   return (
     <>
-      <DataContext.Provider value={data}>
-        <ActionContext.Provider value={{ onCreate, onUpdate, onDelete }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/new" element={<New />} />
-            <Route path="/diary/:id" element={<Diary />} />
-            <Route path="/edit/:id" element={<Edit />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </ActionContext.Provider>
-      </DataContext.Provider>
+    <Providers>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/new" element={<New />} />
+        <Route path="/diary/:id" element={<Diary />} />
+        <Route path="/edit/:id" element={<Edit />} /> 
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Providers>
     </>
   );
 }
