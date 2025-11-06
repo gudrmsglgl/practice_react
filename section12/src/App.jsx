@@ -1,11 +1,12 @@
 import "./App.css";
-import { useReducer, useRef, createContext } from "react";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { useReducer, createContext, useEffect, useRef } from "react";
+import { Routes, Route } from "react-router-dom";
 import Diary from "./pages/Diary";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import NotFound from "./pages/NotFound";
 import Edit from "./pages/Edit";
+import { useLocalStorageDiaryEffect } from "./hooks/useLocalStorageDiaryEffect"; 
 
 const mockData = [
   {
@@ -29,16 +30,24 @@ const mockData = [
 ];
 
 function reducer(state, action) {
+  let newState;
   switch (action.type) {
+    case "INIT":
+      return action.data
     case "CREATE":
-      return [action.data, ...state];
+      newState = [action.data, ...state];
+      break;
     case "UPDATE":
-      return state.map((item) =>
+      newState = state.map((item) =>
         String(item.id) === String(action.data.id) ? action.data : item
       );
+      break;
     case "DELETE":
-      return state.filter((item) => String(item.id) !== String(action.id));
+      newState = state.filter((item) => String(item.id) !== String(action.id));
+      break;
   }
+  
+  return newState
 }
 
 export const DataContext = createContext();
@@ -48,8 +57,31 @@ export const ActionContext = createContext();
 // 2. "/new": 새로운 일기를 작성하는 New 페이지
 // 3. "/diary": 일기를 상세히 조회하는 Diary 페이지
 function App() {
-  const idRef = useRef(4);
-  const [data, dispatch] = useReducer(reducer, mockData);
+  const idRef = useRef(0); 
+  const [data, dispatch] = useReducer(reducer, null); 
+  const initialLoadedData = useLocalStorageDiaryEffect(mockData); // 훅에서 data만 받아오도록 변경
+
+  useEffect(() => {
+    if (initialLoadedData) {
+      dispatch({ type: "INIT", data: initialLoadedData });
+      
+      let maxId = 0;
+      initialLoadedData.forEach((item) => {
+        if (item.id > maxId) {
+          maxId = item.id;
+        }
+      });
+      idRef.current = maxId + 1;
+    }
+  }, [initialLoadedData]);
+
+  useEffect(() => {
+    if (data) {
+      localStorage.setItem("diaryList", JSON.stringify(data));
+    }
+  }, [data]);
+
+  if (data === null) return <div>Loading...</div>;
 
   function onCreate(createdDate, emotionId, content) {
     const newDiary = {
