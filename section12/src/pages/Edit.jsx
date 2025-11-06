@@ -6,15 +6,13 @@ import { useEffect, useContext, useState } from "react";
 import { DataContext } from "../App";
 import { ActionContext } from "../App";
 import useTakeDiary from "../hooks/useTakeDiary";
-
-function getDiaryById(id, totalDiaryList) {
-  //return totalDiaryList.find((diary) => diary.id === id);  // 이렇게 하면 undefined가 나옴
-  return  
-}
+import { usePageTitleEffect } from "../hooks/usePageTitleEffect";
 
 const Edit = () => {
   const params = useParams();
   const nav = useNavigate();
+
+  usePageTitleEffect(`${params.id}번 일기 수정`);
 
   const { onUpdate, onDelete } = useContext(ActionContext);
   const diary = useTakeDiary(params.id);
@@ -34,10 +32,6 @@ const Edit = () => {
       nav(-1, { replace: true});
     }
   }
-
-  // useEffect(() => {
-
-  // }, [params.id]);
   
   const onBack = () => {
     nav(-1, { replace: true});

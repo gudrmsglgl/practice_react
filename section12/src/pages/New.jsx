@@ -4,12 +4,13 @@ import Editor from "../components/Editor";
 import { useContext } from "react";
 import { ActionContext } from "../App";
 import { useNavigate } from "react-router-dom";
+import { usePageTitleEffect } from "../hooks/usePageTitleEffect";
 
 const New = () => {
   const nav = useNavigate();
 
-  //const actionContext = useContext(ActionContext);
   const { onCreate } = useContext(ActionContext);
+  usePageTitleEffect("새 일기 쓰기");
 
   const onSubmit = (inputForm) => {
     onCreate(
@@ -22,7 +23,9 @@ const New = () => {
 
   return (
     <div>
-      <Header title={"새 일기 쓰기"} leftChild={<Button text={"뒤로가기"} />} />
+      <Header 
+        title={"새 일기 쓰기"} 
+        leftChild={<Button onClick={() => nav(-1)} text={"뒤로가기"} />} />
       <Editor onSubmit={onSubmit} />
     </div>
   );

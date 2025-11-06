@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Button from "../components/Button";
 import DiaryList from "../components/DiaryList";
 import { DataContext } from "../App";
+import { usePageTitleEffect } from "../hooks/usePageTitleEffect";
 
 const getMonthlyData = (privotDate, data) => {
 
@@ -29,7 +30,7 @@ const getMonthlyData = (privotDate, data) => {
 
 const Home = () => {
   const data = useContext(DataContext);
-
+  usePageTitleEffect("감정 일기장");
   const [pivotDate, setPivotDate] = useState(new Date());
 
   const onIncreaseMonth = () => {

@@ -4,10 +4,13 @@ import Button from "../components/Button";
 import Viewer from "../components/Viewer"
 import useTakeDiary from "../hooks/useTakeDiary";
 import getStringedDate from "../util/get-string-date";
+import { usePageTitleEffect } from "../hooks/usePageTitleEffect";
 
 export default function Diary() {
     const nav = useNavigate();
     const params = useParams();
+    usePageTitleEffect(`${params.id}번 일기`);
+    
     const diary = useTakeDiary(params.id);
     if (!diary) {
         return <div>일기를 불러오는 중입니다...</div>;
