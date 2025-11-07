@@ -1,7 +1,9 @@
 import {useState, useEffect, useContext} from "react";
 import { DataContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 function useTakeDiary(id) {
+  const nav = useNavigate();
   const totalDiaryList = useContext(DataContext);
   const [diary, setDiary] = useState(null);
 
